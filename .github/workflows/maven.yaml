@@ -23,10 +23,6 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
           gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
 
-      - name: GPG Fix
-        run: |
-          GPG_TTY=$(tty)
-          export GPG_TTY
       - name: Publish to Apache Maven Central
         run: mvn deploy
         env:
