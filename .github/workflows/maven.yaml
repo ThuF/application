@@ -13,16 +13,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Maven Central Repository
+      - name: Set up Apache Maven Central
         uses: actions/setup-java@v1
-        with:
+        with: # running setup-java again overwrites the settings.xml
           java-version: 13
-          server-id: ossrh
-          server-username: ${{ secrets.MAVEN_USERNAME }}
-          server-password: ${{ secrets.MAVEN_PASSWORD }}
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-      - name: Publish package
-        run: |
-          export GPG_TTY=$(tty)
-          mvn --batch-mode deploy
+          server-id: maven # Value of the distributionManagement/repository/id field of the pom.xml
+          server-username: MAVEN_USERNAME # env variable for username in deploy
+          server-password: MAVEN_CENTRAL_TOKEN # env variable for token in deploy
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
+
+      - name: Publish to Apache Maven Central
+        run: mvn deploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+#       - name: Set up Maven Central Repository
+#         uses: actions/setup-java@v1
+#         with:
+#           java-version: 13
+#           server-id: ossrh
+#           server-username: ${{ secrets.MAVEN_USERNAME }}
+#           server-password: ${{ secrets.MAVEN_PASSWORD }}
+#           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+#           gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+#       - name: Publish package
+#         run: |
+#           export GPG_TTY=$(tty)
+#           mvn --batch-mode deploy
