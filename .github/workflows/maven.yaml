@@ -24,6 +24,6 @@ jobs:
 #           gpg-passphrase: ${{ secrets.MAVEN_GPG_PASS_PHRASE }}
       - name: Publish package
         run: |
-          echo "${{ secrets.MAVEN_M2_SETTINGS }}" > /home/runner/.m2/settings.xml
+          echo '${{ secrets.MAVEN_M2_SETTINGS }}' > /home/runner/.m2/settings.xml
           cat /home/runner/.m2/settings.xml
           mvn deploy -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASS_PHRASE }}
