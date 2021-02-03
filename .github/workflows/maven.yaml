@@ -23,4 +23,4 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.MAVEN_GPG_PASS_PHRASE }}
       - name: Publish package
-        run: mvn deploy
+        run: mvn deploy -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASS_PHRASE }}
