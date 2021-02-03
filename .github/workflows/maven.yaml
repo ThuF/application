@@ -17,12 +17,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 13
-          server-id: ossrh
-          server-username: ${{ secrets.MAVEN_USERNAME }}
-          server-password: ${{ secrets.MAVEN_PASSWORD }}
+#           server-id: ossrh
+#           server-username: ${{ secrets.MAVEN_USERNAME }}
+#           server-password: ${{ secrets.MAVEN_PASSWORD }}
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.MAVEN_GPG_PASS_PHRASE }}
+#           gpg-passphrase: ${{ secrets.MAVEN_GPG_PASS_PHRASE }}
       - name: Publish package
-        run: |
+        run: 
+          echo "${{ secrets.MAVEN_M2_SETTINGS }}" > /home/runner/.m2/settings.xml
           cat /home/runner/.m2/settings.xml
           mvn deploy -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASS_PHRASE }}
