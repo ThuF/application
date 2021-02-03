@@ -25,7 +25,7 @@ jobs:
 
       - name: GPG Setup
         run: |
-          echo ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} > private.asc
+          echo "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" > private.asc
           gpg --import --batch private.asc
       - name: Publish to Apache Maven Central
         run: mvn deploy -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }}
